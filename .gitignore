@@ -1,0 +1,30 @@
+## .NET / C#
+bin/
+obj/
+*.user
+*.userosscache
+*.suo
+*.userprefs
+*.sln.docstates
+
+## IDE / Editors
+.vs/
+.vscode/
+.idea/
+*.code-workspace
+*.swp
+*.bak
+*~
+
+## Build outputs & Packages
+dist/
+*.macroDeckPlugin
+*.nupkg
+*.snupkg
+
+## OS Generated
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store

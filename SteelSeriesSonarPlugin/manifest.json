@@ -1,0 +1,25 @@
+{
+  "manifestVersion": 1,
+  "id": "com.steelseries.sonar",
+  "name": "SteelSeries GG Sonar",
+  "version": "1.0.0",
+  "description": "Control SteelSeries GG Sonar audio channels — volume, mute, chat mix, and streamer mode — directly from your Macro Deck.",
+  "license": "MIT",
+  "repository": "https://github.com/Cjhackeryt/SteelseriesSonar",
+  "compatibility": {
+    "sdk": "3.0.0-preview.10"
+  },
+  "publisher": {
+    "name": "Cjhackeryt"
+  },
+  "icon": "Assets/icon.svg",
+  "entrypoints": {
+    "win-x64": {
+      "executable": "runtimes/win-x64/SteelSeriesSonarPlugin.dll",
+      "runtime": {
+        "kind": "FrameworkDependent",
+        "dotnetVersion": "10.0"
+      }
+    }
+  }
+}

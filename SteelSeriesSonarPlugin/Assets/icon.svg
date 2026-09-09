@@ -1,0 +1,145 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <!-- Background Gradients -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#141724"/>
+      <stop offset="50%" stop-color="#0c0e17"/>
+      <stop offset="100%" stop-color="#07080d"/>
+    </linearGradient>
+
+    <!-- Border Glow Gradient -->
+    <linearGradient id="borderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff7b00" stop-opacity="0.8"/>
+      <stop offset="35%" stop-color="#ff4500" stop-opacity="0.5"/>
+      <stop offset="70%" stop-color="#ff2a6d" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#05d9e8" stop-opacity="0.4"/>
+    </linearGradient>
+
+    <!-- Sonar Wave Neon Gradient -->
+    <linearGradient id="sonarGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ff3e00"/>
+      <stop offset="40%" stop-color="#ff6a00"/>
+      <stop offset="80%" stop-color="#ff9500"/>
+      <stop offset="100%" stop-color="#ffc043"/>
+    </linearGradient>
+
+    <!-- Equalizer Gradient -->
+    <linearGradient id="eqGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#ff2a6d"/>
+      <stop offset="40%" stop-color="#ff5500"/>
+      <stop offset="100%" stop-color="#ffaa00"/>
+    </linearGradient>
+
+    <!-- Cyan Accent Gradient -->
+    <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00f2fe"/>
+      <stop offset="100%" stop-color="#4facfe"/>
+    </linearGradient>
+
+    <!-- Glass Highlight -->
+    <linearGradient id="glassGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.16"/>
+      <stop offset="45%" stop-color="#ffffff" stop-opacity="0.03"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Filters for Glows -->
+    <filter id="coreGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="ambientBgGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="35" result="blur"/>
+    </filter>
+  </defs>
+
+  <!-- ── Ambient Glow Behind Device ── -->
+  <circle cx="128" cy="138" r="75" fill="#ff4d00" opacity="0.32" filter="url(#ambientBgGlow)"/>
+  <circle cx="90" cy="110" r="45" fill="#00f2fe" opacity="0.14" filter="url(#ambientBgGlow)"/>
+
+  <!-- ── Squircle Base Plate (Macro Deck 3 App Icon Style) ── -->
+  <rect x="12" y="12" width="232" height="232" rx="56" ry="56" fill="url(#bgGrad)"/>
+  <rect x="12" y="12" width="232" height="232" rx="56" ry="56" fill="none" stroke="url(#borderGrad)" stroke-width="2.5"/>
+
+  <!-- Glass Inner Highlight Curve -->
+  <path d="M14,68 C14,38.17 38.17,14 68,14 L188,14 C217.83,14 242,38.17 242,68 L242,120 C180,110 80,125 14,155 Z"
+        fill="url(#glassGrad)"/>
+
+  <!-- ── Acoustic Sonar Radar Rings (Concentric Pulsing Waves) ── -->
+  <circle cx="128" cy="132" r="88" fill="none" stroke="#252a3d" stroke-width="1.5" stroke-dasharray="3 6" opacity="0.6"/>
+  <circle cx="128" cy="132" r="68" fill="none" stroke="#323850" stroke-width="1.5" stroke-opacity="0.5"/>
+  <circle cx="128" cy="132" r="48" fill="none" stroke="url(#sonarGrad)" stroke-width="1" stroke-opacity="0.3" stroke-dasharray="2 4"/>
+
+  <!-- ── Dynamic Equalizer Wave Bars (Backdrop) ── -->
+  <g opacity="0.25" transform="translate(0, 4)">
+    <rect x="52" y="126" width="5" height="16" rx="2.5" fill="#ff4500"/>
+    <rect x="63" y="118" width="5" height="32" rx="2.5" fill="#ff4500"/>
+    <rect x="74" y="108" width="5" height="52" rx="2.5" fill="#ff5500"/>
+    <rect x="85" y="102" width="5" height="64" rx="2.5" fill="#ff6a00"/>
+    <rect x="166" y="102" width="5" height="64" rx="2.5" fill="#ff6a00"/>
+    <rect x="177" y="108" width="5" height="52" rx="2.5" fill="#ff5500"/>
+    <rect x="188" y="118" width="5" height="32" rx="2.5" fill="#ff4500"/>
+    <rect x="199" y="126" width="5" height="16" rx="2.5" fill="#ff4500"/>
+  </g>
+
+  <!-- ── Central Glowing Sonar Waveform / Sonic Emblem ── -->
+  <!-- Left Radiating Audio Waves -->
+  <path d="M88,102 C72,118 72,146 88,162"
+        fill="none" stroke="url(#sonarGrad)" stroke-width="6" stroke-linecap="round" filter="url(#softGlow)"/>
+  <path d="M68,88 C44,112 44,152 68,176"
+        fill="none" stroke="url(#sonarGrad)" stroke-width="5" stroke-linecap="round" stroke-opacity="0.65"/>
+  <path d="M48,76 C18,106 18,158 48,188"
+        fill="none" stroke="url(#sonarGrad)" stroke-width="3.5" stroke-linecap="round" stroke-opacity="0.35"/>
+
+  <!-- Right Radiating Audio Waves -->
+  <path d="M168,102 C184,118 184,146 168,162"
+        fill="none" stroke="url(#sonarGrad)" stroke-width="6" stroke-linecap="round" filter="url(#softGlow)"/>
+  <path d="M188,88 C212,112 212,152 188,176"
+        fill="none" stroke="url(#sonarGrad)" stroke-width="5" stroke-linecap="round" stroke-opacity="0.65"/>
+  <path d="M208,76 C238,106 238,158 208,188"
+        fill="none" stroke="url(#sonarGrad)" stroke-width="3.5" stroke-linecap="round" stroke-opacity="0.35"/>
+
+  <!-- Center Modern Dynamic Equalizer Sound Core -->
+  <g filter="url(#coreGlow)">
+    <!-- Central Sound Spectrum Peak -->
+    <rect x="124" y="82" width="8" height="100" rx="4" fill="url(#eqGrad)"/>
+    <rect x="111" y="94" width="7" height="76" rx="3.5" fill="url(#eqGrad)"/>
+    <rect x="138" y="94" width="7" height="76" rx="3.5" fill="url(#eqGrad)"/>
+    <rect x="99" y="110" width="6" height="44" rx="3" fill="url(#eqGrad)"/>
+    <rect x="151" y="110" width="6" height="44" rx="3" fill="url(#eqGrad)"/>
+  </g>
+
+  <!-- High-Precision Center Acoustic Radar Dot -->
+  <circle cx="128" cy="132" r="5" fill="#ffffff" filter="url(#softGlow)"/>
+  <circle cx="128" cy="132" r="2.5" fill="#ffea00"/>
+
+  <!-- ── Top Status Notch / Sonar Deck Brand Indicator ── -->
+  <g transform="translate(128, 42)">
+    <rect x="-36" y="-8" width="72" height="16" rx="8" fill="#181c2b" stroke="url(#borderGrad)" stroke-width="1"/>
+    <!-- Live Studio indicator dot -->
+    <circle cx="-22" cy="0" r="3.5" fill="#00f2fe" filter="url(#softGlow)"/>
+    <text x="5" y="3.5" text-anchor="middle"
+          font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+          font-weight="800" font-size="8.5" fill="#e2e8f0" letter-spacing="1.5">SONAR</text>
+  </g>
+
+  <!-- ── Subtle Bottom Deck Grid Matrix Dots ── -->
+  <g opacity="0.35" fill="#4a5568">
+    <circle cx="108" cy="216" r="2"/>
+    <circle cx="121" cy="216" r="2"/>
+    <circle cx="134" cy="216" r="2"/>
+    <circle cx="147" cy="216" r="2"/>
+  </g>
+</svg>
