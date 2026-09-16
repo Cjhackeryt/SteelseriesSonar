@@ -1,0 +1,21 @@
+# Publishing a GitHub release builds the plugin with its tag as the version and
+# publishes it to the Macro Deck Platform.
+
+name: Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    uses: Macro-Deck-App/GitHub-Actions/.github/workflows/publish-plugin.yml@v1
+    permissions:
+      contents: read
+      id-token: write
+    with:
+      package-id: com.steelseries.sonar
+      version: ${{ github.event.release.tag_name }}
+      source: SteelSeriesSonarPlugin
+      cli-version: 3.0.0-beta.5
+      changelog: ${{ github.event.release.body }}
