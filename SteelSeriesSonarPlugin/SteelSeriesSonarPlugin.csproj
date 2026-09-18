@@ -21,12 +21,12 @@
 
   <ItemGroup>
     <!-- Macro Deck 3 SDK packages -->
-    <PackageReference Include="MacroDeck.Plugin.Hosting" Version="3.0.0-preview.10" />
-    <PackageReference Include="MacroDeck.Sdk" Version="3.0.0-preview.10" />
+    <PackageReference Include="MacroDeck.Plugin.Hosting" Version="3.0.0-beta.11" />
+    <PackageReference Include="MacroDeck.Sdk" Version="3.0.0-beta.11" />
     <!-- Recommended: forward plugin logs into the MD3 host log stream -->
-    <PackageReference Include="MacroDeck.Plugin.Serilog" Version="3.0.0-preview.10" />
+    <PackageReference Include="MacroDeck.Plugin.Serilog" Version="3.0.0-beta.11" />
     <!-- Compile-time analyzers catch common plugin mistakes -->
-    <PackageReference Include="MacroDeck.Plugin.Analyzers" Version="3.0.0-preview.10" PrivateAssets="all" />
+    <PackageReference Include="MacroDeck.Plugin.Analyzers" Version="3.0.0-beta.11" PrivateAssets="all" />
   </ItemGroup>
 
   <!-- Embed manifest.json into the output directory -->
