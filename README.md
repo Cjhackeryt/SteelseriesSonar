@@ -1,5 +1,4 @@
 # SteelseriesSonar — SteelSeries GG Sonar Macro Deck 3 Plugin
-
 [![Build & Package](https://github.com/Cjhackeryt/SteelseriesSonar/actions/workflows/build-and-release.yml/badge.svg)](https://github.com/Cjhackeryt/SteelseriesSonar/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Target: .NET 10](https://img.shields.io/badge/.NET-10.0-512bd4.svg)](https://dotnet.microsoft.com/)
@@ -8,7 +7,6 @@
 A professional, high-performance **Macro Deck 3** plugin for controlling **SteelSeries GG Sonar** audio directly from your stream deck, tablet, or secondary monitor.
 
 Control channel volumes, toggle mute states, adjust Chat Mix balance, and switch between Streamer Mode mixes (Streaming vs. Monitoring) with zero perceptible latency.
-
 ---
 
 ## ✨ Features
@@ -19,7 +17,11 @@ Control channel volumes, toggle mute states, adjust Chat Mix balance, and switch
 - 🎙️ **Streamer Mode Support**: Full dual-slider support for Streamer Mode — independently control what your stream hears (**Streaming**) and what you hear in your headset (**Monitoring**).
 - 🔄 **Automatic Dynamic Discovery**: Automatically detects Sonar's local dynamic web server port on startup and handles GG restarts gracefully without manual configuration.
 - ⚡ **Optimized Architecture**: Powered by .NET 10 and `IHttpClientFactory` connection pooling for instant response times and low resource usage.
-
+---
+<img width="1460" height="741" alt="649000495-e18c0ee2-e73e-49dc-bd8f-1739ce6fe645" src="https://github.com/user-attachments/assets/e9e99feb-422f-48f2-ba53-0cc0744df741" />
+<img width="722" height="549" alt="649000514-470881a7-880e-4373-afd8-f6851157dc9b" src="https://github.com/user-attachments/assets/91aa2612-64c2-4f2a-bb23-32480c685028" />
+![Uploading 649000514-470881a7-880e-4373-afd8-f6851157dc9b.png…]()
+<img width="756" height="810" alt="649000532-afffe8a9-38d7-4625-be60-7f408261c488" src="https://github.com/user-attachments/assets/e6d12ea7-b352-4782-9529-a29f5b1d8eee" />
 ---
 
 ## 🎧 Supported Audio Channels
