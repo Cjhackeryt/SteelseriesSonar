@@ -1,0 +1,20 @@
+name: Publish Plugin to Macro Deck
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    uses: Macro-Deck-App/GitHub-Actions/.github/workflows/publish-plugin.yml@v1
+    with:
+      version: ${{ github.ref_name }}
+      source: SteelSeriesSonarPlugin
+      run-tests: true
+      run-stub-host: true
+      upload-artifact: true

@@ -56,50 +56,30 @@ git push origin v1.0.0
 
 ## 3. Submitting to the Macro Deck Extension Store
 
-To make your plugin visible in the in-app **Macro Deck Extension Store**:
+The repository contains the `macrodeck-build.json` and
+`.github/workflows/release.yml` files required by the
+[Macro Deck Creator Portal](https://docs.macro-deck.app/creator-portal/).
+The portal accepts only builds uploaded by its reusable GitHub workflow.
 
-1. **Verify your Manifest**:
-   Make sure [`SteelSeriesSonarPlugin/manifest.json`](SteelSeriesSonarPlugin/manifest.json) has your exact version, description, and author details:
-   ```json
-   {
-     "manifestVersion": 1,
-     "id": "com.steelseries.sonar",
-     "name": "SteelSeries GG Sonar",
-     "version": "1.0.0",
-     "description": "Control SteelSeries GG Sonar audio channels — volume, mute, chat mix, and streamer mode — directly from your Macro Deck.",
-     "publisher": {
-       "name": "Your Name / Organization"
-     },
-     "icon": "Assets/icon.svg",
-     "entrypoints": {
-       "win-x64": {
-         "executable": "SteelSeriesSonarPlugin.dll",
-         "runtime": {
-           "kind": "FrameworkDependent",
-           "dotnetVersion": "10.0"
-         }
-       }
-     }
-   }
-   ```
-
-2. **Test your package locally**:
+1. Sign in to the Creator Portal and create a **Plugin / Integration** project.
+   Use `com.steelseries.sonar` as the Package ID; it must match the `id` in
+   [`SteelSeriesSonarPlugin/manifest.json`](SteelSeriesSonarPlugin/manifest.json).
+2. In the project's **Builds** page, connect the public
+   `Cjhackeryt/SteelseriesSonar` GitHub repository.
+3. Commit and push the publishing workflow and build definition if they are not
+   already on GitHub.
+4. Create and push a semantic version tag, for example:
    ```powershell
-   cd SteelSeriesSonarPlugin
-   dotnet build -c Release
-   New-Item -ItemType Directory -Force -Path ..\dist\staging\runtimes\win-x64
-   Copy-Item bin\Release\net10.0\* ..\dist\staging\runtimes\win-x64 -Recurse -Force
-   Remove-Item ..\dist\staging\runtimes\win-x64\manifest.json, ..\dist\staging\runtimes\win-x64\icon.svg -Force -ErrorAction SilentlyContinue
-   Remove-Item ..\dist\staging\runtimes\win-x64\Assets -Recurse -Force -ErrorAction SilentlyContinue
-   Copy-Item manifest.json,icon.svg ..\dist\staging -Force
-   Copy-Item Assets ..\dist\staging -Recurse -Force
-   macrodeck-plugin validate --directory ..\dist\staging
-   macrodeck-plugin pack --source ..\dist\staging --output ..\dist\com.steelseries.sonar.macroDeckPlugin --force
+   git tag v1.0.0
+   git push origin v1.0.0
    ```
+   The workflow builds and uploads the package to the Creator Portal. The tag
+   version is written into the manifest by the publishing workflow.
+5. In the portal, create a release from the build, add it to the submission,
+   complete the Store summary and tags, and select **Submit for Review**.
 
-3. **Submit to Macro Deck**:
-   - Visit the [Macro Deck Extension Store Portal / GitHub Repository](https://github.com/SuchByte/Macro-Deck).
-   - Submit your plugin metadata / package URL according to Macro Deck 3 extension submission instructions.
+The Macro Deck Store signs the package after approval. No signing key or
+publishing secret is required.
 
 ---
 
