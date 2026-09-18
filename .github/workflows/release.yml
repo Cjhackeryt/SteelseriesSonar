@@ -16,5 +16,5 @@ jobs:
       version: ${{ github.ref_name }}
       source: SteelSeriesSonarPlugin
       run-tests: true
-      run-stub-host: false
+      run-stub-host: true
       upload-artifact: true
