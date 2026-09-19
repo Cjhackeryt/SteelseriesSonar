@@ -49,7 +49,7 @@ git push origin v1.0.0
 1. GitHub Actions will start a Windows runner with .NET 10.
 2. It restores and compiles the project in `Release` mode.
 3. It installs `MacroDeck.Plugin.Cli` and validates your `manifest.json`.
-4. It packages the `com.cjhackeryt.steelseriessonar.macro-deck.macroDeckPlugin` binary.
+4. It packages the `com.cjhackeryt.steelseriessonar.macroDeckPlugin` binary.
 5. It automatically creates a new **GitHub Release** under your repository and attaches the compiled `.macroDeckPlugin` file ready for users to download.
 
 ---
@@ -62,7 +62,7 @@ The repository contains the `macrodeck-build.json` and
 The portal accepts only builds uploaded by its reusable GitHub workflow.
 
 1. Sign in to the Creator Portal and create a **Plugin / Integration** project.
-   Use `com.cjhackeryt.steelseriessonar.macro-deck` as the Package ID; it must match the `id` in
+   Use `com.cjhackeryt.steelseriessonar` as the Package ID; it must match the `id` in
    [`SteelSeriesSonarPlugin/manifest.json`](SteelSeriesSonarPlugin/manifest.json).
 2. In the project's **Builds** page, connect the public
    `Cjhackeryt/SteelseriesSonar` GitHub repository.
@@ -86,6 +86,6 @@ publishing secret is required.
 ## 4. Manual Testing / Direct Distribution
 
 Users can install the plugin directly without using the store:
-1. Send them the generated `dist/com.cjhackeryt.steelseriessonar.macro-deck.macroDeckPlugin` file (or direct them to your GitHub Releases page).
+1. Send them the generated `dist/com.cjhackeryt.steelseriessonar.macroDeckPlugin` file (or direct them to your GitHub Releases page).
 2. In Macro Deck 3, open **Plugins** -> **Install from file**.
 3. Select the file and click **Install**.
