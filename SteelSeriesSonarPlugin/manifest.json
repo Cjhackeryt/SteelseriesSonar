@@ -2,7 +2,7 @@
   "manifestVersion": 1,
   "id": "com.cjhackeryt.steelseriessonar",
   "name": "SteelSeries GG Sonar",
-  "version": "1.0.12",
+  "version": "1.0.14",
   "description": "Control SteelSeries GG Sonar audio channels — volume, mute, chat mix, and streamer mode — directly from your Macro Deck.",
   "license": "MIT",
   "repository": "https://github.com/Cjhackeryt/SteelseriesSonar",
