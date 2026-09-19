@@ -1,7 +1,7 @@
 # Macro Deck plugin conformance report
 
 Suite version: `1.2.0`  
-Plugin: `com.steelseries.sonar` `1.0.0`  
+Plugin: `com.cjhackeryt.steelseriessonar.macro-deck` `1.0.9`
 Conformant: **yes**  
 Passed: 30 - Failed: 1 - Skipped: 18
 

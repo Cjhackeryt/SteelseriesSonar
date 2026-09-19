@@ -61,17 +61,17 @@ jobs:
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path dist
-          macrodeck-plugin pack --source dist/staging --output dist/com.steelseries.sonar.macroDeckPlugin --force
-          macrodeck-plugin pack --source dist/staging --output dist/com.steelseries.sonar-1.0.0.macroDeckPlugin --force
-          if ("${{ startsWith(github.ref, 'refs/tags/v1.0.0-signed') }}" -eq "True") {
-            Copy-Item release/com.steelseries.sonar-1.0.0-signed.macroDeckPlugin dist/ -Force
+          macrodeck-plugin pack --source dist/staging --output dist/com.cjhackeryt.steelseriessonar.macro-deck.macroDeckPlugin --force
+          macrodeck-plugin pack --source dist/staging --output dist/com.cjhackeryt.steelseriessonar.macro-deck-1.0.9.macroDeckPlugin --force
+          if ("${{ startsWith(github.ref, 'refs/tags/v1.0.9-signed') }}" -eq "True") {
+            Copy-Item release/com.cjhackeryt.steelseriessonar.macro-deck-1.0.9-signed.macroDeckPlugin dist/ -Force
             Copy-Item release/SteelseriesSonar-Development.cer dist/ -Force
           }
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: com.steelseries.sonar-plugin
+          name: com.cjhackeryt.steelseriessonar.macro-deck-plugin
           path: dist/*.macroDeckPlugin
           if-no-files-found: error
 

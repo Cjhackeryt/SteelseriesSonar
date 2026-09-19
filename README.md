@@ -126,9 +126,9 @@ dotnet build -c Release
 
 ### 3. Package into `.macroDeckPlugin`
 ```powershell
-macrodeck-plugin pack --source bin/Release/net10.0 --output ../dist/com.steelseries.sonar.macroDeckPlugin --force
+macrodeck-plugin pack --source bin/Release/net10.0 --output ../dist/com.cjhackeryt.steelseriessonar.macro-deck.macroDeckPlugin --force
 ```
-The installable artifact will be generated in `dist/com.steelseries.sonar.macroDeckPlugin`.
+The installable artifact will be generated in `dist/com.cjhackeryt.steelseriessonar.macro-deck.macroDeckPlugin`.
 
 ---
 
