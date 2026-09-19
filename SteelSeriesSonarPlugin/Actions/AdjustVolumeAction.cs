@@ -1,6 +1,6 @@
 using MacroDeck.Sdk.Actions;
 using MacroDeck.Localization;
-using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace SteelSeriesSonarPlugin.Actions;
 
@@ -14,8 +14,8 @@ public sealed class AdjustVolumeAction : IActionDefinition
     private readonly ILogger _logger;
 
     public string Id => "adjust-volume";
-    public LocalizedText Name => "Adjust Volume";
-    public LocalizedText Description => "Increase or decrease a Sonar channel's volume by a step.";
+    public LocalizedText Name => Strings.Actions.AdjustVolume.Name();
+    public LocalizedText Description => Strings.Actions.AdjustVolume.Description();
 
     public IReadOnlyList<ActionParameter> Parameters { get; } =
     [
@@ -25,19 +25,19 @@ public sealed class AdjustVolumeAction : IActionDefinition
             name: "direction",
             options:
             [
-                new ActionParameterOption { Value = "increase", Label = "Increase" },
-                new ActionParameterOption { Value = "decrease", Label = "Decrease" },
+                new ActionParameterOption { Value = "increase", Label = Strings.Common.Action.Increase() },
+                new ActionParameterOption { Value = "decrease", Label = Strings.Common.Action.Decrease() },
             ],
-            label: "Direction",
-            description: "Increase or decrease the volume.",
+            label: Strings.Actions.AdjustVolume.Parameters.Direction.Label(),
+            description: Strings.Actions.AdjustVolume.Parameters.Direction.Description(),
             defaultValue: "increase",
             required: true),
         ActionParameter.Slider(
             name: "step",
             min: 1,
             max: 25,
-            label: "Step (%)",
-            description: "How much to change the volume by (1-25 %).",
+            label: Strings.Actions.AdjustVolume.Parameters.Step.Label(),
+            description: Strings.Actions.AdjustVolume.Parameters.Step.Description(),
             step: 1,
             defaultValue: 5),
     ];
@@ -70,7 +70,7 @@ public sealed class AdjustVolumeAction : IActionDefinition
             var stepPercent = SonarActionParameters.ReadDouble(context.Parameters, "step", 5.0);
             var step = decrease ? -(stepPercent / 100.0) : stepPercent / 100.0;
 
-            _logger.LogInformation("AdjustVolume: channel={Channel} output={Output} step={Step:+0.##;-0.##}", channel, output, step);
+            _logger.Information("AdjustVolume: channel={Channel} output={Output} step={Step:+0.##;-0.##}", channel, output, step);
 
             try
             {
@@ -81,9 +81,9 @@ public sealed class AdjustVolumeAction : IActionDefinition
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to adjust volume on channel {Channel}", channel);
+                _logger.Error(ex, "Failed to adjust volume on channel {Channel}", channel);
                 _sonar.ResetCache();
-                return ActionResult.Failed("execution_failed", ex.Message);
+                return ActionResult.Failed("execution_failed", Strings.Actions.AdjustVolume.ExecutionFailed());
             }
         }
     }

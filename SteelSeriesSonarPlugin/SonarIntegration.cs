@@ -4,7 +4,7 @@ using MacroDeck.Sdk;
 using MacroDeck.Sdk.Actions;
 using MacroDeck.Sdk.Issues;
 using MacroDeck.Sdk.Variables;
-using Microsoft.Extensions.Logging;
+using Serilog;
 using SteelSeriesSonarPlugin.Actions;
 
 namespace SteelSeriesSonarPlugin;
@@ -18,7 +18,7 @@ public sealed class SonarIntegration : IPluginIntegration, IIntegrationIssueProv
     private const string IssueIdSonarUnavailable = "sonar-unavailable";
 
     private readonly SonarClient _sonar;
-    private readonly ILogger<SonarIntegration> _logger;
+    private readonly ILogger _logger;
 
     public IReadOnlyList<IActionDefinition> Actions { get; }
 
@@ -64,7 +64,7 @@ public sealed class SonarIntegration : IPluginIntegration, IIntegrationIssueProv
 
     private readonly ConcurrentDictionary<string, object?> _lastKnownValues = new(StringComparer.OrdinalIgnoreCase);
 
-    public SonarIntegration(SonarClient sonar, ILogger<SonarIntegration> logger)
+    public SonarIntegration(SonarClient sonar, ILogger logger)
     {
         _sonar = sonar;
         _logger = logger;
@@ -85,16 +85,16 @@ public sealed class SonarIntegration : IPluginIntegration, IIntegrationIssueProv
     /// <inheritdoc />
     public async Task InitializeAsync(IIntegrationContext context)
     {
-        _logger.LogInformation("[Sonar] Integration initializing…");
+        _logger.Information("[Sonar] Integration initializing…");
 
         var available = await _sonar.IsAvailableAsync();
         if (available)
         {
-            _logger.LogInformation("[Sonar] Sonar is reachable — reading initial state.");
+            _logger.Information("[Sonar] Sonar is reachable — reading initial state.");
         }
         else
         {
-            _logger.LogWarning(
+            _logger.Warning(
                 "[Sonar] Sonar is not currently reachable. " +
                 "Variables will populate once SteelSeries GG and Sonar are launched.");
         }
@@ -103,7 +103,7 @@ public sealed class SonarIntegration : IPluginIntegration, IIntegrationIssueProv
     /// <inheritdoc />
     public Task ShutdownAsync()
     {
-        _logger.LogInformation("[Sonar] Integration shutting down.");
+        _logger.Information("[Sonar] Integration shutting down.");
         return Task.CompletedTask;
     }
 
@@ -123,20 +123,20 @@ public sealed class SonarIntegration : IPluginIntegration, IIntegrationIssueProv
             {
                 var raw = await _sonar.GetVolumeAsync(volChannel.Channel, volChannel.Output, cancellationToken);
                 freshValue = ClampVolume(raw);
-                _logger.LogDebug("[Sonar] {Channel} volume read: {Value}", volChannel, freshValue);
+                _logger.Debug("[Sonar] {Channel} volume read: {Value}", volChannel, freshValue);
             }
             else if (MuteVarToChannel.TryGetValue(lowerName, out var muteChannel))
             {
                 // Unsuffixed mute variables follow the currently active Sonar
                 // output, just like the legacy actions do.
                 freshValue = await _sonar.GetMuteAsync(muteChannel, OutputType.None, cancellationToken);
-                _logger.LogDebug("[Sonar] {Channel} muted read: {Value}", muteChannel, freshValue);
+                _logger.Debug("[Sonar] {Channel} muted read: {Value}", muteChannel, freshValue);
             }
             else if (lowerName == "sonar_chatmix")
             {
                 var raw = await _sonar.GetChatMixAsync(cancellationToken);
                 freshValue = ClampChatMix(raw);
-                _logger.LogDebug("[Sonar] ChatMix read: {Value}", freshValue);
+                _logger.Debug("[Sonar] ChatMix read: {Value}", freshValue);
             }
 
             if (freshValue is not null)
@@ -147,7 +147,7 @@ public sealed class SonarIntegration : IPluginIntegration, IIntegrationIssueProv
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "[Sonar] Failed to read variable '{Name}' — returning last-known value", lowerName);
+            _logger.Warning(ex, "[Sonar] Failed to read variable '{Name}' — returning last-known value", lowerName);
 
             // On failure after a successful connection loss, reset cache so
             // re-discovery happens on the next attempt.
@@ -178,7 +178,7 @@ public sealed class SonarIntegration : IPluginIntegration, IIntegrationIssueProv
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "[Sonar] Failed to write mute variable '{Name}'", lowerName);
+                _logger.Error(ex, "[Sonar] Failed to write mute variable '{Name}'", lowerName);
                 _sonar.ResetCache();
                 return VariableWriteResult.Failed(ex.Message);
             }
@@ -201,7 +201,7 @@ public sealed class SonarIntegration : IPluginIntegration, IIntegrationIssueProv
 
         catch (Exception ex)
         {
-            _logger.LogError(ex, "[Sonar] Failed to write volume variable '{Name}'", lowerName);
+            _logger.Error(ex, "[Sonar] Failed to write volume variable '{Name}'", lowerName);
             _sonar.ResetCache();
             return VariableWriteResult.Failed(ex.Message);
         }
@@ -344,8 +344,8 @@ public sealed class SonarIntegration : IPluginIntegration, IIntegrationIssueProv
             new IntegrationIssue
             {
                 Id = IssueIdSonarUnavailable,
-                Title = "SteelSeries GG Sonar is not running",
-                Description = "Start SteelSeries GG and ensure Sonar is enabled in settings.",
+                Title = Strings.Common.Issue.SonarUnavailable.Title(),
+                Description = Strings.Common.Issue.SonarUnavailable.Description(),
                 Severity = IntegrationIssueSeverity.Warning,
             }
         ];
@@ -353,5 +353,5 @@ public sealed class SonarIntegration : IPluginIntegration, IIntegrationIssueProv
 
     /// <inheritdoc />
     public Task<IssueResolution> ResolveIssueAsync(string issueId, CancellationToken cancellationToken) =>
-        Task.FromResult(IssueResolution.Failed("This issue resolves automatically once SteelSeries GG Sonar is reachable."));
+        Task.FromResult(IssueResolution.Failed(Strings.Common.Issue.SonarUnavailable.Resolve()));
 }

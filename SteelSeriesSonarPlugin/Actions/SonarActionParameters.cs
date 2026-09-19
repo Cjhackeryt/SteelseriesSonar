@@ -14,16 +14,16 @@ internal static class SonarActionParameters
             name: "channel",
             options:
             [
-                new ActionParameterOption { Value = SonarChannel.Master, Label = "Master" },
-                new ActionParameterOption { Value = SonarChannel.Game, Label = "Game" },
-                new ActionParameterOption { Value = SonarChannel.ChatRender, Label = "Chat (playback)" },
-                new ActionParameterOption { Value = SonarChannel.ChatCapture, Label = "Chat (microphone)" },
-                new ActionParameterOption { Value = SonarChannel.Media, Label = "Media" },
-                new ActionParameterOption { Value = SonarChannel.Aux, Label = "Aux" },
-                new ActionParameterOption { Value = SonarChannel.Microphone, Label = "Microphone" },
+                new ActionParameterOption { Value = SonarChannel.Master, Label = Strings.Common.Channel.Master() },
+                new ActionParameterOption { Value = SonarChannel.Game, Label = Strings.Common.Channel.Game() },
+                new ActionParameterOption { Value = SonarChannel.ChatRender, Label = Strings.Common.Channel.ChatPlayback() },
+                new ActionParameterOption { Value = SonarChannel.ChatCapture, Label = Strings.Common.Channel.ChatMicrophone() },
+                new ActionParameterOption { Value = SonarChannel.Media, Label = Strings.Common.Channel.Media() },
+                new ActionParameterOption { Value = SonarChannel.Aux, Label = Strings.Common.Channel.Aux() },
+                new ActionParameterOption { Value = SonarChannel.Microphone, Label = Strings.Common.Channel.Microphone() },
             ],
-            label: "Channel",
-            description: "The audio channel to control.",
+            label: Strings.Common.Channel.Label(),
+            description: Strings.Common.Channel.Description(),
             defaultValue: defaultValue,
             required: true);
 
@@ -32,12 +32,12 @@ internal static class SonarActionParameters
             name: "outputType",
             options:
             [
-                new ActionParameterOption { Value = "classic", Label = "Classic" },
-                new ActionParameterOption { Value = "streaming", Label = "Streaming" },
-                new ActionParameterOption { Value = "monitoring", Label = "Monitoring" },
+                new ActionParameterOption { Value = "classic", Label = Strings.Common.OutputType.Classic() },
+                new ActionParameterOption { Value = "streaming", Label = Strings.Common.OutputType.Streaming() },
+                new ActionParameterOption { Value = "monitoring", Label = Strings.Common.OutputType.Monitoring() },
             ],
-            label: "Output Type",
-            description: "Classic = single slider. Streaming / Monitoring = Streamer Mode outputs.",
+            label: Strings.Common.OutputType.Label(),
+            description: Strings.Common.OutputType.Description(),
             defaultValue: "classic",
             required: true);
 

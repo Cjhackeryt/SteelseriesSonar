@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a64c89e3b10e0</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a64c89e3b10e0</value>
+  </resheader>
+  <data name="Actions.AdjustVolume.Name" xml:space="preserve"><value>Adjust Volume</value></data>
+  <data name="Actions.AdjustVolume.Description" xml:space="preserve"><value>Increase or decrease a Sonar channel's volume by a step.</value></data>
+  <data name="Actions.AdjustVolume.Parameters.Direction.Label" xml:space="preserve"><value>Direction</value></data>
+  <data name="Actions.AdjustVolume.Parameters.Direction.Description" xml:space="preserve"><value>Increase or decrease the volume.</value></data>
+  <data name="Actions.AdjustVolume.Parameters.Step.Label" xml:space="preserve"><value>Step (%)</value></data>
+  <data name="Actions.AdjustVolume.Parameters.Step.Description" xml:space="preserve"><value>How much to change the volume by (1-25 %).</value></data>
+  <data name="Actions.AdjustVolume.ExecutionFailed" xml:space="preserve"><value>The volume adjustment could not be completed.</value></data>
+  <data name="Actions.Mute.Name" xml:space="preserve"><value>Mute / Unmute</value></data>
+  <data name="Actions.Mute.Description" xml:space="preserve"><value>Set the mute state of a Sonar channel to On or Off.</value></data>
+  <data name="Actions.Mute.Parameters.MuteState.Label" xml:space="preserve"><value>State</value></data>
+  <data name="Actions.Mute.Parameters.MuteState.Description" xml:space="preserve"><value>Mute or unmute the channel.</value></data>
+  <data name="Actions.Mute.ExecutionFailed" xml:space="preserve"><value>The mute state change could not be completed.</value></data>
+  <data name="Actions.SetChatMix.Name" xml:space="preserve"><value>Set Chat Mix</value></data>
+  <data name="Actions.SetChatMix.Description" xml:space="preserve"><value>Set the Sonar Chat Mix balance (-100 full chat, 0 balanced, +100 full game).</value></data>
+  <data name="Actions.SetChatMix.Parameters.ChatMix.Label" xml:space="preserve"><value>Chat Mix</value></data>
+  <data name="Actions.SetChatMix.Parameters.ChatMix.Description" xml:space="preserve"><value>-100 = full chat, 0 = balanced, +100 = full game.</value></data>
+  <data name="Actions.SetChatMix.ExecutionFailed" xml:space="preserve"><value>The chat mix could not be updated.</value></data>
+  <data name="Actions.SetStreamerMode.Name" xml:space="preserve"><value>Set Streamer Mode</value></data>
+  <data name="Actions.SetStreamerMode.Description" xml:space="preserve"><value>Enable, disable, or toggle Sonar Streamer Mode (dual Streaming/Monitoring sliders).</value></data>
+  <data name="Actions.SetStreamerMode.Parameters.Action.Label" xml:space="preserve"><value>Action</value></data>
+  <data name="Actions.SetStreamerMode.Parameters.Action.Description" xml:space="preserve"><value>Enable / Disable Streamer Mode, or Toggle (flip) the current state.</value></data>
+  <data name="Actions.SetStreamerMode.ExecutionFailed" xml:space="preserve"><value>The Streamer Mode change could not be completed.</value></data>
+  <data name="Actions.SetVolume.Name" xml:space="preserve"><value>Set Volume</value></data>
+  <data name="Actions.SetVolume.Description" xml:space="preserve"><value>Set a Sonar channel's volume to an exact level (0-100 %).</value></data>
+  <data name="Actions.SetVolume.Parameters.Volume.Label" xml:space="preserve"><value>Volume (%)</value></data>
+  <data name="Actions.SetVolume.Parameters.Volume.Description" xml:space="preserve"><value>Target volume from 0 to 100.</value></data>
+  <data name="Actions.SetVolume.ExecutionFailed" xml:space="preserve"><value>The volume change could not be completed.</value></data>
+  <data name="Actions.ToggleMute.Name" xml:space="preserve"><value>Toggle Mute</value></data>
+  <data name="Actions.ToggleMute.Description" xml:space="preserve"><value>Flip the mute state of a Sonar channel.</value></data>
+  <data name="Actions.ToggleMute.ExecutionFailed" xml:space="preserve"><value>The mute toggle could not be completed.</value></data>
+  <data name="Common.Action.Enable" xml:space="preserve"><value>Enable</value></data>
+  <data name="Common.Action.Disable" xml:space="preserve"><value>Disable</value></data>
+  <data name="Common.Action.Toggle" xml:space="preserve"><value>Toggle</value></data>
+  <data name="Common.Action.Increase" xml:space="preserve"><value>Increase</value></data>
+  <data name="Common.Action.Decrease" xml:space="preserve"><value>Decrease</value></data>
+  <data name="Common.Action.Mute" xml:space="preserve"><value>Mute</value></data>
+  <data name="Common.Action.Unmute" xml:space="preserve"><value>Unmute</value></data>
+  <data name="Common.Channel.Master" xml:space="preserve"><value>Master</value></data>
+  <data name="Common.Channel.Game" xml:space="preserve"><value>Game</value></data>
+  <data name="Common.Channel.ChatPlayback" xml:space="preserve"><value>Chat (playback)</value></data>
+  <data name="Common.Channel.ChatMicrophone" xml:space="preserve"><value>Chat (microphone)</value></data>
+  <data name="Common.Channel.Media" xml:space="preserve"><value>Media</value></data>
+  <data name="Common.Channel.Aux" xml:space="preserve"><value>Aux</value></data>
+  <data name="Common.Channel.Microphone" xml:space="preserve"><value>Microphone</value></data>
+  <data name="Common.Channel.Label" xml:space="preserve"><value>Channel</value></data>
+  <data name="Common.Channel.Description" xml:space="preserve"><value>The audio channel to control.</value></data>
+  <data name="Common.OutputType.Label" xml:space="preserve"><value>Output Type</value></data>
+  <data name="Common.OutputType.Description" xml:space="preserve"><value>Classic = single slider. Streaming / Monitoring = Streamer Mode outputs.</value></data>
+  <data name="Common.OutputType.Classic" xml:space="preserve"><value>Classic</value></data>
+  <data name="Common.OutputType.Streaming" xml:space="preserve"><value>Streaming</value></data>
+  <data name="Common.OutputType.Monitoring" xml:space="preserve"><value>Monitoring</value></data>
+  <data name="Common.General.ExecutionFailed" xml:space="preserve"><value>The operation could not be completed.</value></data>
+  <data name="Common.Issue.SonarUnavailable.Title" xml:space="preserve"><value>SteelSeries GG Sonar is not running</value></data>
+  <data name="Common.Issue.SonarUnavailable.Description" xml:space="preserve"><value>Start SteelSeries GG and ensure Sonar is enabled in settings.</value></data>
+  <data name="Common.Issue.SonarUnavailable.Resolve" xml:space="preserve"><value>This issue resolves automatically once SteelSeries GG Sonar is reachable.</value></data>
+</root>

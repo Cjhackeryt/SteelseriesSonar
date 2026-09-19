@@ -1,6 +1,6 @@
 using MacroDeck.Sdk.Actions;
 using MacroDeck.Localization;
-using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace SteelSeriesSonarPlugin.Actions;
 
@@ -13,8 +13,8 @@ public sealed class ToggleMuteAction : IActionDefinition
     private readonly ILogger _logger;
 
     public string Id => "toggle-mute";
-    public LocalizedText Name => "Toggle Mute";
-    public LocalizedText Description => "Flip the mute state of a Sonar channel.";
+    public LocalizedText Name => Strings.Actions.ToggleMute.Name();
+    public LocalizedText Description => Strings.Actions.ToggleMute.Description();
 
     public IReadOnlyList<ActionParameter> Parameters { get; } =
     [
@@ -46,19 +46,19 @@ public sealed class ToggleMuteAction : IActionDefinition
             var channel = SonarActionParameters.ReadChannel(context.Parameters);
             var output = SonarActionParameters.ReadOutputType(context.Parameters);
 
-            _logger.LogInformation("ToggleMute: channel={Channel} output={Output}", channel, output);
+            _logger.Information("ToggleMute: channel={Channel} output={Output}", channel, output);
 
             try
             {
                 var newState = await _sonar.ToggleMuteAsync(channel, output, context.CancellationToken);
-                _logger.LogInformation("Channel {Channel} is now {State}", channel, newState ? "muted" : "unmuted");
+                _logger.Information("Channel {Channel} is now {State}", channel, newState ? "muted" : "unmuted");
                 return ActionResult.Success();
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to toggle mute on channel {Channel}", channel);
+                _logger.Error(ex, "Failed to toggle mute on channel {Channel}", channel);
                 _sonar.ResetCache();
-                return ActionResult.Failed("execution_failed", ex.Message);
+                return ActionResult.Failed("execution_failed", Strings.Actions.ToggleMute.ExecutionFailed());
             }
         }
     }

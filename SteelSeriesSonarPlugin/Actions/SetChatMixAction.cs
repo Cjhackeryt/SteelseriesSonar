@@ -1,6 +1,6 @@
 using MacroDeck.Sdk.Actions;
 using MacroDeck.Localization;
-using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace SteelSeriesSonarPlugin.Actions;
 
@@ -14,8 +14,8 @@ public sealed class SetChatMixAction : IActionDefinition
     private readonly ILogger _logger;
 
     public string Id => "set-chat-mix";
-    public LocalizedText Name => "Set Chat Mix";
-    public LocalizedText Description => "Set the Sonar Chat Mix balance (-100 full chat, 0 balanced, +100 full game).";
+    public LocalizedText Name => Strings.Actions.SetChatMix.Name();
+    public LocalizedText Description => Strings.Actions.SetChatMix.Description();
 
     public IReadOnlyList<ActionParameter> Parameters { get; } =
     [
@@ -23,8 +23,8 @@ public sealed class SetChatMixAction : IActionDefinition
             name: "chatMix",
             min: -100,
             max: 100,
-            label: "Chat Mix",
-            description: "-100 = full chat, 0 = balanced, +100 = full game.",
+            label: Strings.Actions.SetChatMix.Parameters.ChatMix.Label(),
+            description: Strings.Actions.SetChatMix.Parameters.ChatMix.Description(),
             step: 1,
             defaultValue: 0),
     ];
@@ -53,7 +53,7 @@ public sealed class SetChatMixAction : IActionDefinition
             var chatMixValue = SonarActionParameters.ReadDouble(context.Parameters, "chatMix", 0.0);
             var chatMix = Math.Clamp(chatMixValue / 100.0, -1.0, 1.0);
 
-            _logger.LogInformation("SetChatMix: value={Value}", chatMix);
+            _logger.Information("SetChatMix: value={Value}", chatMix);
 
             try
             {
@@ -62,9 +62,9 @@ public sealed class SetChatMixAction : IActionDefinition
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to set chat mix");
+                _logger.Error(ex, "Failed to set chat mix");
                 _sonar.ResetCache();
-                return ActionResult.Failed("execution_failed", ex.Message);
+                return ActionResult.Failed("execution_failed", Strings.Actions.SetChatMix.ExecutionFailed());
             }
         }
     }

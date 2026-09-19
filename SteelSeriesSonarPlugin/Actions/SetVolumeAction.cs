@@ -1,6 +1,6 @@
 using MacroDeck.Sdk.Actions;
 using MacroDeck.Localization;
-using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace SteelSeriesSonarPlugin.Actions;
 
@@ -14,8 +14,8 @@ public sealed class SetVolumeAction : IActionDefinition
     private readonly ILogger _logger;
 
     public string Id => "set-volume";
-    public LocalizedText Name => "Set Volume";
-    public LocalizedText Description => "Set a Sonar channel's volume to an exact level (0-100 %).";
+    public LocalizedText Name => Strings.Actions.SetVolume.Name();
+    public LocalizedText Description => Strings.Actions.SetVolume.Description();
 
     public IReadOnlyList<ActionParameter> Parameters { get; } =
     [
@@ -25,8 +25,8 @@ public sealed class SetVolumeAction : IActionDefinition
             name: "volume",
             min: 0,
             max: 100,
-            label: "Volume (%)",
-            description: "Target volume from 0 to 100.",
+            label: Strings.Actions.SetVolume.Parameters.Volume.Label(),
+            description: Strings.Actions.SetVolume.Parameters.Volume.Description(),
             step: 1,
             defaultValue: 50),
     ];
@@ -57,7 +57,7 @@ public sealed class SetVolumeAction : IActionDefinition
             var volumePercent = SonarActionParameters.ReadDouble(context.Parameters, "volume", 50.0);
             var volume = Math.Clamp(volumePercent / 100.0, 0.0, 1.0);
 
-            _logger.LogInformation("SetVolume: channel={Channel} output={Output} volume={Volume}", channel, output, volume);
+            _logger.Information("SetVolume: channel={Channel} output={Output} volume={Volume}", channel, output, volume);
 
             try
             {
@@ -66,9 +66,9 @@ public sealed class SetVolumeAction : IActionDefinition
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to set volume on channel {Channel}", channel);
+                _logger.Error(ex, "Failed to set volume on channel {Channel}", channel);
                 _sonar.ResetCache();
-                return ActionResult.Failed("execution_failed", ex.Message);
+                return ActionResult.Failed("execution_failed", Strings.Actions.SetVolume.ExecutionFailed());
             }
         }
     }

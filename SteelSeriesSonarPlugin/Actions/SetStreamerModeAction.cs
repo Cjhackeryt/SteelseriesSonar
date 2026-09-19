@@ -1,6 +1,6 @@
 using MacroDeck.Sdk.Actions;
 using MacroDeck.Localization;
-using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace SteelSeriesSonarPlugin.Actions;
 
@@ -13,8 +13,8 @@ public sealed class SetStreamerModeAction : IActionDefinition
     private readonly ILogger _logger;
 
     public string Id => "set-streamer-mode";
-    public LocalizedText Name => "Set Streamer Mode";
-    public LocalizedText Description => "Enable, disable, or toggle Sonar Streamer Mode (dual Streaming/Monitoring sliders).";
+    public LocalizedText Name => Strings.Actions.SetStreamerMode.Name();
+    public LocalizedText Description => Strings.Actions.SetStreamerMode.Description();
 
     public IReadOnlyList<ActionParameter> Parameters { get; } =
     [
@@ -22,12 +22,12 @@ public sealed class SetStreamerModeAction : IActionDefinition
             name: "action",
             options:
             [
-                new ActionParameterOption { Value = "enable", Label = "Enable" },
-                new ActionParameterOption { Value = "disable", Label = "Disable" },
-                new ActionParameterOption { Value = "toggle", Label = "Toggle" },
+                new ActionParameterOption { Value = "enable", Label = Strings.Common.Action.Enable() },
+                new ActionParameterOption { Value = "disable", Label = Strings.Common.Action.Disable() },
+                new ActionParameterOption { Value = "toggle", Label = Strings.Common.Action.Toggle() },
             ],
-            label: "Action",
-            description: "Enable / Disable Streamer Mode, or Toggle (flip) the current state.",
+            label: Strings.Actions.SetStreamerMode.Parameters.Action.Label(),
+            description: Strings.Actions.SetStreamerMode.Parameters.Action.Description(),
             defaultValue: "toggle",
             required: true),
     ];
@@ -55,7 +55,7 @@ public sealed class SetStreamerModeAction : IActionDefinition
         {
             var action = SonarActionParameters.ReadString(context.Parameters, "action", "toggle").ToLowerInvariant();
 
-            _logger.LogInformation("SetStreamerMode: action={Action}", action);
+            _logger.Information("SetStreamerMode: action={Action}", action);
 
             try
             {
@@ -66,14 +66,14 @@ public sealed class SetStreamerModeAction : IActionDefinition
                     _ => await _sonar.ToggleStreamerModeAsync(context.CancellationToken)
                 };
 
-                _logger.LogInformation("Streamer Mode is now {State}.", newState ? "enabled" : "disabled");
+                _logger.Information("Streamer Mode is now {State}.", newState ? "enabled" : "disabled");
                 return ActionResult.Success();
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to change Streamer Mode");
+                _logger.Error(ex, "Failed to change Streamer Mode");
                 _sonar.ResetCache();
-                return ActionResult.Failed("execution_failed", ex.Message);
+                return ActionResult.Failed("execution_failed", Strings.Actions.SetStreamerMode.ExecutionFailed());
             }
         }
 

@@ -1,6 +1,6 @@
 using MacroDeck.Sdk.Actions;
 using MacroDeck.Localization;
-using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace SteelSeriesSonarPlugin.Actions;
 
@@ -13,8 +13,8 @@ public sealed class MuteAction : IActionDefinition
     private readonly ILogger _logger;
 
     public string Id => "mute";
-    public LocalizedText Name => "Mute / Unmute";
-    public LocalizedText Description => "Set the mute state of a Sonar channel to On or Off.";
+    public LocalizedText Name => Strings.Actions.Mute.Name();
+    public LocalizedText Description => Strings.Actions.Mute.Description();
 
     public IReadOnlyList<ActionParameter> Parameters { get; } =
     [
@@ -24,11 +24,11 @@ public sealed class MuteAction : IActionDefinition
             name: "muteState",
             options:
             [
-                new ActionParameterOption { Value = "mute", Label = "Mute" },
-                new ActionParameterOption { Value = "unmute", Label = "Unmute" },
+                new ActionParameterOption { Value = "mute", Label = Strings.Common.Action.Mute() },
+                new ActionParameterOption { Value = "unmute", Label = Strings.Common.Action.Unmute() },
             ],
-            label: "State",
-            description: "Mute or unmute the channel.",
+            label: Strings.Actions.Mute.Parameters.MuteState.Label(),
+            description: Strings.Actions.Mute.Parameters.MuteState.Description(),
             defaultValue: "mute",
             required: true),
     ];
@@ -59,7 +59,7 @@ public sealed class MuteAction : IActionDefinition
             var state = SonarActionParameters.ReadString(context.Parameters, "muteState", "mute");
             var mute = state.Equals("mute", StringComparison.OrdinalIgnoreCase);
 
-            _logger.LogInformation("Mute: channel={Channel} output={Output} mute={Mute}", channel, output, mute);
+            _logger.Information("Mute: channel={Channel} output={Output} mute={Mute}", channel, output, mute);
 
             try
             {
@@ -68,9 +68,9 @@ public sealed class MuteAction : IActionDefinition
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to set mute on channel {Channel}", channel);
+                _logger.Error(ex, "Failed to set mute on channel {Channel}", channel);
                 _sonar.ResetCache();
-                return ActionResult.Failed("execution_failed", ex.Message);
+                return ActionResult.Failed("execution_failed", Strings.Actions.Mute.ExecutionFailed());
             }
         }
     }

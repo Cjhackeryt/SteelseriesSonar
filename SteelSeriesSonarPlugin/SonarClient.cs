@@ -1,8 +1,7 @@
 using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
+using Serilog;
 
 namespace SteelSeriesSonarPlugin;
 
@@ -113,7 +112,7 @@ public sealed class SonarClient
             "SteelSeries", "GG", "coreProps.json");
 
     private readonly HttpClient _http;
-    private readonly ILogger<SonarClient> _logger;
+    private readonly ILogger _logger;
     private string? _sonarBase; // e.g. "http://127.0.0.1:54241"
 
     private string? _cachedMode;
@@ -132,10 +131,10 @@ public sealed class SonarClient
         PropertyNameCaseInsensitive = true,
     };
 
-    public SonarClient(HttpClient http, ILogger<SonarClient>? logger = null)
+    public SonarClient(HttpClient http, ILogger? logger = null)
     {
         _http = http ?? throw new ArgumentNullException(nameof(http));
-        _logger = logger ?? NullLogger<SonarClient>.Instance;
+        _logger = logger ?? Log.Logger;
     }
 
     // ── Address discovery ─────────────────────────────────────────────────────
@@ -181,7 +180,7 @@ public sealed class SonarClient
             var subAppsUrl = $"{ggAddress}/subApps";
             try
             {
-                _logger.LogDebug("[Sonar] Probing GG sub-app registry at {Url}", subAppsUrl);
+                _logger.Debug("[Sonar] Probing GG sub-app registry at {Url}", subAppsUrl);
                 var subAppsJson = await _http.GetStringAsync(subAppsUrl, ct);
                 var subApps = JsonSerializer.Deserialize<SubAppsResponse>(subAppsJson, JsonOpts)
                     ?? throw new InvalidOperationException("Failed to parse /subApps response from GG.");
@@ -197,13 +196,13 @@ public sealed class SonarClient
                     throw new InvalidOperationException("GG reported Sonar without a web server address.");
 
                 _sonarBase = NormalizeBaseAddress(sonarAddress, preferHttps: false);
-                _logger.LogInformation("[Sonar] Discovered Sonar endpoint {Address}", _sonarBase);
+                _logger.Information("[Sonar] Discovered Sonar endpoint {Address}", _sonarBase);
                 return _sonarBase;
             }
             catch (Exception ex) when (ex is HttpRequestException or InvalidOperationException or JsonException)
             {
                 lastError = ex;
-                _logger.LogDebug(ex, "[Sonar] GG discovery probe failed at {Url}", subAppsUrl);
+                _logger.Debug(ex, "[Sonar] GG discovery probe failed at {Url}", subAppsUrl);
             }
         }
 
