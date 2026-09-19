@@ -217,7 +217,7 @@ public sealed class SonarIntegration : IPluginIntegration, IIntegrationIssueProv
         {
             variables.Add(VariableDefinition.Eager(name, VariableType.Numeric, 0, FastRefresh) with
             {
-                Id = name,
+                Id = ToLocalId(name),
                 Unit = "%",
                 SemanticKind = VariableSemanticKinds.Percentage,
                 Write = new VariableWriteCapability { CommitOnRelease = false }
@@ -227,13 +227,13 @@ public sealed class SonarIntegration : IPluginIntegration, IIntegrationIssueProv
         foreach (var name in MuteVarToChannel.Keys)
             variables.Add(VariableDefinition.Eager(name, VariableType.Boolean, refreshInterval: FastRefresh) with
             {
-                Id = name,
+                Id = ToLocalId(name),
                 Write = new VariableWriteCapability { CommitOnRelease = false }
             });
 
         variables.Add(VariableDefinition.Eager("sonar_chatmix", VariableType.Numeric, 0, FastRefresh) with
         {
-            Id = "sonar_chatmix",
+            Id = ToLocalId("sonar_chatmix"),
             Unit = "%",
             SemanticKind = VariableSemanticKinds.Percentage
         });
@@ -259,6 +259,9 @@ public sealed class SonarIntegration : IPluginIntegration, IIntegrationIssueProv
         }
         return targets;
     }
+
+    private static string ToLocalId(string name) =>
+        name.Replace('_', '-');
 
     private static bool TryReadNumeric(object? value, out double number)
     {
