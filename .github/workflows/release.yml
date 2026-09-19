@@ -17,4 +17,5 @@ jobs:
       source: SteelSeriesSonarPlugin
       run-tests: true
       run-stub-host: true
+      cli-version: 3.0.0-preview.10
       upload-artifact: true
