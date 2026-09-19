@@ -217,6 +217,7 @@ public sealed class SonarIntegration : IPluginIntegration, IIntegrationIssueProv
         {
             variables.Add(VariableDefinition.Eager(name, VariableType.Numeric, 0, FastRefresh) with
             {
+                Id = name,
                 Unit = "%",
                 SemanticKind = VariableSemanticKinds.Percentage,
                 Write = new VariableWriteCapability { CommitOnRelease = false }
@@ -226,11 +227,13 @@ public sealed class SonarIntegration : IPluginIntegration, IIntegrationIssueProv
         foreach (var name in MuteVarToChannel.Keys)
             variables.Add(VariableDefinition.Eager(name, VariableType.Boolean, refreshInterval: FastRefresh) with
             {
+                Id = name,
                 Write = new VariableWriteCapability { CommitOnRelease = false }
             });
 
         variables.Add(VariableDefinition.Eager("sonar_chatmix", VariableType.Numeric, 0, FastRefresh) with
         {
+            Id = "sonar_chatmix",
             Unit = "%",
             SemanticKind = VariableSemanticKinds.Percentage
         });
