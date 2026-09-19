@@ -134,9 +134,9 @@ The installable artifact will be generated in `dist/com.cjhackeryt.steelseriesso
 
 ## 🚀 Continuous Integration & Deployment
 
-This repository includes a fully configured GitHub Actions workflow (`.github/workflows/build-and-release.yml`):
-- **On Push/PR**: Automatically compiles, verifies, and packages the plugin artifact.
-- **On Version Tag (`v*`)**: Automatically creates a new GitHub Release with release notes and attaches the compiled `.macroDeckPlugin` package.
+This repository uses two GitHub Actions workflows:
+- [`.github/workflows/release.yml`](.github/workflows/release.yml) builds, validates, and uploads tagged packages to the Macro Deck Creator Portal.
+- [`.github/workflows/attach-release-asset.yml`](.github/workflows/attach-release-asset.yml) attaches the generated `.macroDeckPlugin` to the matching GitHub Release.
 
 ---
 

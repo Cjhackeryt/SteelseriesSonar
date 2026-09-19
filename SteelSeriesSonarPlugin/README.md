@@ -1,6 +1,6 @@
 # SteelseriesSonar — SteelSeries GG Sonar Macro Deck 3 Plugin
 
-[![Build & Package](https://github.com/Cjhackeryt/SteelseriesSonar/actions/workflows/build-and-release.yml/badge.svg)](https://github.com/Cjhackeryt/SteelseriesSonar/actions)
+[![Publish Plugin](https://github.com/Cjhackeryt/SteelseriesSonar/actions/workflows/release.yml/badge.svg)](https://github.com/Cjhackeryt/SteelseriesSonar/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](../LICENSE)
 [![Target: .NET 10](https://img.shields.io/badge/.NET-10.0-512bd4.svg)](https://dotnet.microsoft.com/)
 [![Macro Deck](https://img.shields.io/badge/Macro%20Deck-3.0+-0088cc.svg)](https://macro-deck.app/)

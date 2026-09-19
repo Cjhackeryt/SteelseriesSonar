@@ -32,7 +32,7 @@ git push -u origin main
 
 ## 2. Automated Releases via GitHub Actions
 
-The repository includes a ready-to-use GitHub Actions workflow located in [`.github/workflows/build-and-release.yml`](.github/workflows/build-and-release.yml).
+The repository uses [`.github/workflows/release.yml`](.github/workflows/release.yml) to build and upload packages to the Macro Deck Creator Portal, and [`.github/workflows/attach-release-asset.yml`](.github/workflows/attach-release-asset.yml) to attach the package to the corresponding GitHub Release.
 
 ### How to trigger an automated release:
 Whenever you are ready to publish a new version (e.g. `v1.0.0`):
@@ -47,10 +47,9 @@ git push origin v1.0.0
 
 ### What happens automatically:
 1. GitHub Actions will start a Windows runner with .NET 10.
-2. It restores and compiles the project in `Release` mode.
-3. It installs `MacroDeck.Plugin.Cli` and validates your `manifest.json`.
-4. It packages the `com.cjhackeryt.steelseriessonar.macroDeckPlugin` binary.
-5. It automatically creates a new **GitHub Release** under your repository and attaches the compiled `.macroDeckPlugin` file ready for users to download.
+2. The Macro Deck reusable workflow restores, compiles, validates, and packages the plugin.
+3. The package is uploaded to the Macro Deck Creator Portal and retained as a GitHub Actions artifact.
+4. The asset workflow attaches the generated `.macroDeckPlugin` file to the matching GitHub Release.
 
 ---
 
