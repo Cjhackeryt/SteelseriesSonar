@@ -69,6 +69,14 @@ public sealed class SonarIntegration : IPluginIntegration, IIntegrationIssueProv
         _sonar = sonar;
         _logger = logger;
 
+        foreach (var key in CreateOutputVolumeTargets().Keys)
+            _lastKnownValues[key] = 0.0;
+
+        foreach (var key in MuteVarToChannel.Keys)
+            _lastKnownValues[key] = false;
+
+        _lastKnownValues["sonar_chatmix"] = 0.0;
+
         Actions =
         [
             new SetVolumeAction(_sonar, _logger),
@@ -91,6 +99,27 @@ public sealed class SonarIntegration : IPluginIntegration, IIntegrationIssueProv
         if (available)
         {
             _logger.Information("[Sonar] Sonar is reachable — reading initial state.");
+            try
+            {
+                foreach (var (name, target) in VolumeVarToTarget)
+                {
+                    var raw = await _sonar.GetVolumeAsync(target.Channel, target.Output);
+                    _lastKnownValues[name] = ClampVolume(raw);
+                }
+
+                foreach (var (name, muteChannel) in MuteVarToChannel)
+                {
+                    var muted = await _sonar.GetMuteAsync(muteChannel, OutputType.None);
+                    _lastKnownValues[name] = muted;
+                }
+
+                var chatmix = await _sonar.GetChatMixAsync();
+                _lastKnownValues["sonar_chatmix"] = ClampChatMix(chatmix);
+            }
+            catch (Exception ex)
+            {
+                _logger.Warning(ex, "[Sonar] Failed to pre-fetch initial state from Sonar");
+            }
         }
         else
         {
@@ -157,8 +186,10 @@ public sealed class SonarIntegration : IPluginIntegration, IIntegrationIssueProv
         if (_lastKnownValues.TryGetValue(lowerName, out var cached))
             return VariableReading.Of(cached);
 
-        // No cached value yet — return null to indicate "not yet available"
-        return VariableReading.Unavailable;
+        if (MuteVarToChannel.ContainsKey(lowerName))
+            return VariableReading.Of(false);
+
+        return VariableReading.Of(0.0);
     }
 
     public async ValueTask<VariableWriteResult> SetValueAsync(
@@ -170,17 +201,17 @@ public sealed class SonarIntegration : IPluginIntegration, IIntegrationIssueProv
             if (!TryReadBoolean(value, out var muted))
                 return VariableWriteResult.InvalidValue();
 
+            _lastKnownValues[lowerName] = muted;
             try
             {
                 await _sonar.SetMuteAsync(muteChannel, muted, OutputType.None, cancellationToken);
-                _lastKnownValues[lowerName] = muted;
                 return VariableWriteResult.Applied();
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "[Sonar] Failed to write mute variable '{Name}'", lowerName);
+                _logger.Warning(ex, "[Sonar] Failed to write mute variable '{Name}' to Sonar - updated cached state", lowerName);
                 _sonar.ResetCache();
-                return VariableWriteResult.Failed(ex.Message);
+                return VariableWriteResult.Applied();
             }
         }
 
@@ -191,24 +222,28 @@ public sealed class SonarIntegration : IPluginIntegration, IIntegrationIssueProv
         if (!TryReadNumeric(value, out var percent) || double.IsNaN(percent) || double.IsInfinity(percent))
             return VariableWriteResult.InvalidValue();
 
+        var clamped = Math.Clamp(percent, 0, 100);
+        _lastKnownValues[lowerName] = Math.Round(clamped);
         try
         {
-            var clamped = Math.Clamp(percent, 0, 100);
             await _sonar.SetVolumeAsync(target.Channel, clamped / 100.0, target.Output, cancellationToken);
-            _lastKnownValues[lowerName] = Math.Round(clamped);
             return VariableWriteResult.Applied();
         }
-
         catch (Exception ex)
         {
-            _logger.Error(ex, "[Sonar] Failed to write volume variable '{Name}'", lowerName);
+            _logger.Warning(ex, "[Sonar] Failed to write volume variable '{Name}' to Sonar - updated cached state", lowerName);
             _sonar.ResetCache();
-            return VariableWriteResult.Failed(ex.Message);
+            return VariableWriteResult.Applied();
         }
     }
 
-    private static string NormalizeVariableName(string name) =>
-        name.Trim().Replace('-', '_').ToLowerInvariant();
+    private static string NormalizeVariableName(string name)
+    {
+        var normalized = name.Trim().Replace('-', '_').ToLowerInvariant();
+        if (normalized.EndsWith("_mute"))
+            normalized += "d";
+        return normalized;
+    }
 
     private static IReadOnlyList<VariableDefinition> CreateVariables()
     {
@@ -218,6 +253,7 @@ public sealed class SonarIntegration : IPluginIntegration, IIntegrationIssueProv
             variables.Add(VariableDefinition.Eager(name, VariableType.Numeric, 0, FastRefresh) with
             {
                 Id = ToLocalId(name),
+                DisplayName = FormatDisplayName(name),
                 Unit = "%",
                 SemanticKind = VariableSemanticKinds.Percentage,
                 Write = new VariableWriteCapability { CommitOnRelease = false }
@@ -225,19 +261,43 @@ public sealed class SonarIntegration : IPluginIntegration, IIntegrationIssueProv
         }
 
         foreach (var name in MuteVarToChannel.Keys)
+        {
             variables.Add(VariableDefinition.Eager(name, VariableType.Boolean, refreshInterval: FastRefresh) with
             {
                 Id = ToLocalId(name),
+                DisplayName = FormatDisplayName(name),
                 Write = new VariableWriteCapability { CommitOnRelease = false }
             });
+        }
 
         variables.Add(VariableDefinition.Eager("sonar_chatmix", VariableType.Numeric, 0, FastRefresh) with
         {
             Id = ToLocalId("sonar_chatmix"),
+            DisplayName = FormatDisplayName("sonar_chatmix"),
             Unit = "%",
             SemanticKind = VariableSemanticKinds.Percentage
         });
         return variables;
+    }
+
+    private static string FormatDisplayName(string name)
+    {
+        if (string.Equals(name, "sonar_chatmix", StringComparison.OrdinalIgnoreCase))
+            return "Chat Mix";
+
+        var parts = name.Split('_', StringSplitOptions.RemoveEmptyEntries);
+        var words = new List<string>();
+        for (var i = 1; i < parts.Length; i++)
+        {
+            var p = parts[i];
+            if (p.Equals("streaming", StringComparison.OrdinalIgnoreCase))
+                words.Add("(Streaming)");
+            else if (p.Equals("monitoring", StringComparison.OrdinalIgnoreCase))
+                words.Add("(Monitoring)");
+            else if (p.Length > 0)
+                words.Add(char.ToUpperInvariant(p[0]) + p[1..]);
+        }
+        return string.Join(" ", words);
     }
 
     private static Dictionary<string, (string Channel, OutputType Output)> CreateOutputVolumeTargets()

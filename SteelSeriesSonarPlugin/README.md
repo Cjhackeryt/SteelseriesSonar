@@ -120,7 +120,7 @@ dotnet tool install -g MacroDeck.Plugin.Cli --prerelease
 dotnet build -c Release
 
 # 3. Package Plugin
-macrodeck-plugin pack --source bin/Release/net10.0 --output ../dist/com.cjhackeryt.steelseriessonar.macroDeckPlugin --force
+macrodeck-plugin pack --source bin/Release/net10.0 --output ../dist/com.ckhackeryt.steelseriessonar.macroDeckPlugin --force
 ```
 
 ---
