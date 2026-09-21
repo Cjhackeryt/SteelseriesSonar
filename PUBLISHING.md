@@ -61,7 +61,7 @@ The repository contains the `macrodeck-build.json` and
 The portal accepts only builds uploaded by its reusable GitHub workflow.
 
 1. Sign in to the Creator Portal and create a **Plugin / Integration** project.
-   Use `com.ckhackeryt.steelseriessonar` as the Package ID; it must match the `id` in
+   Use `com.cjhackeryt.steelseriessonar` as the Package ID; it must match the `id` in
    [`SteelSeriesSonarPlugin/manifest.json`](SteelSeriesSonarPlugin/manifest.json).
 2. In the project's **Builds** page, connect the public
    `Cjhackeryt/SteelseriesSonar` GitHub repository.
@@ -85,6 +85,6 @@ publishing secret is required.
 ## 4. Manual Testing / Direct Distribution
 
 Users can install the plugin directly without using the store:
-1. Send them the generated `dist/com.ckhackeryt.steelseriessonar.macroDeckPlugin` file (or direct them to your GitHub Releases page).
+1. Send them the generated `dist/com.cjhackeryt.steelseriessonar.macroDeckPlugin` file (or direct them to your GitHub Releases page).
 2. In Macro Deck 3, open **Plugins** -> **Install from file**.
 3. Select the file and click **Install**.
